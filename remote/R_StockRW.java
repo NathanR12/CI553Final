@@ -1,15 +1,11 @@
 package remote;
 
+import middle.StockException;
+import middle.StockReadWriter;
 import catalogue.Product;
 import dbAccess.StockRW;
-import middle.StockException;
-
 import javax.swing.*;
 import java.rmi.RemoteException;
-
-// There can only be 1 ResultSet opened per statement
-// so no simultaneous use of the statement object
-// hence the synchronized methods
 
 /**
  * Implements Read/Write access to the stock list,
@@ -18,8 +14,8 @@ import java.rmi.RemoteException;
  * @version 2.1
  */
 
-public class      R_StockRW
-       extends    java.rmi.server.UnicastRemoteObject
+public class R_StockRW
+       extends java.rmi.server.UnicastRemoteObject
        implements RemoteStockRW_I
 {
   private static final long serialVersionUID = 1;
@@ -44,10 +40,10 @@ public class      R_StockRW
    * @return true if product exists else false
    * @throws middle.StockException if underlying error
    */
-  public synchronized boolean exists( String pNum )
+  public synchronized boolean exists(String pNum)
          throws StockException
   {
-    return aStockRW.exists( pNum );
+    return aStockRW.exists(pNum);
   }
 
   /**
@@ -56,10 +52,10 @@ public class      R_StockRW
    * @return StockNumber, Description, Price, Quantity
    * @throws middle.StockException if underlying error
    */
-  public synchronized Product getDetails( String pNum )
+  public synchronized Product getDetails(String pNum)
          throws StockException
   {
-    return aStockRW.getDetails( pNum );
+    return aStockRW.getDetails(pNum);
   }
 
   /**
@@ -68,12 +64,11 @@ public class      R_StockRW
    * @return image
    * @throws middle.StockException if underlying error
    */
-  public synchronized ImageIcon getImage( String pNum )
+  public synchronized ImageIcon getImage(String pNum)
          throws StockException
   {
-    return aStockRW.getImage( pNum );
+    return aStockRW.getImage(pNum);
   }
-
 
   /**
    * Buys stock and hence decrements number in the stock list
@@ -82,13 +77,10 @@ public class      R_StockRW
    * @return StockNumber, Description, Price, Quantity
    * @throws middle.StockException if underlying error
    */
-  // Need to Fix
-  //  What happens if can not commit data
-  //
-  public synchronized boolean buyStock( String pNum, int amount )
+  public synchronized boolean buyStock(String pNum, int amount)
          throws StockException
   {
-    return aStockRW.buyStock( pNum, amount );
+    return aStockRW.buyStock(pNum, amount);
   }
 
   /**
@@ -97,12 +89,11 @@ public class      R_StockRW
    * @param amount Quantity
    * @throws middle.StockException if underlying error
    */
-  public synchronized void addStock( String pNum, int amount )
+  public synchronized void addStock(String pNum, int amount)
          throws StockException
   {
-    aStockRW.addStock( pNum, amount );
+    aStockRW.addStock(pNum, amount);
   }
-
 
   /**
    * Modifies Stock details for a given product number.
@@ -110,9 +101,22 @@ public class      R_StockRW
    * @param product The product to be modified
    * @throws middle.StockException if underlying error
    */
-  public synchronized void modifyStock( Product product )
+  public synchronized void modifyStock(Product product)
               throws StockException
   {
-    aStockRW.modifyStock( product );
+    aStockRW.modifyStock(product);
+  }
+
+  /**
+   * Removes stock from the store.
+   * Assumes the product exists in the database.
+   * @param pNum Product number
+   * @param amount Amount of stock to remove
+   * @throws StockException if there's an issue with the stock operation
+   */
+  public synchronized void removeStock(String pNum, int amount)
+         throws StockException
+  {
+    aStockRW.removeStock(pNum, amount);
   }
 }

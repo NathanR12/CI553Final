@@ -21,7 +21,7 @@ import java.util.Observer;
 public class DisplayView extends Canvas implements Observer
 {
   private static final long serialVersionUID = 1L;
-  private Font font = new Font("Monospaced",Font.BOLD,24);
+  private Font font = new Font("Arial",Font.PLAIN,18);
   private int H = 300;         // Height of window 
   private int W = 400;         // Width  of window 
   private String textToDisplay = "";
@@ -150,19 +150,18 @@ public class DisplayView extends Canvas implements Observer
    * @param key The key of the list requested
    * @return As a string a list of order numbers.
    */
-  private String listOfOrders( Map<String, List<Integer> > map, String key )
-  {
-    String res = "";
-    if ( map.containsKey( key ))
-    {
-      List<Integer> orders = map.get(key);
-      for ( Integer i : orders )
-      {
-        res += " " + i;
-      }
-    } else {
-      res = "-No key-";
-    }
-    return res;
-  }
+  private String listOfOrders(Map<String, List<Integer>> map, String key) {
+	    String res = "";
+	    if (map.containsKey(key)) {
+	        List<Integer> orders = map.get(key);
+	        for (Integer i : orders) {
+	            res += i + ", ";
+	        }
+	        if (!res.isEmpty()) {
+	            res = res.substring(0, res.length() - 2);  // Remove the trailing comma and space
+	        }
+	    } else {
+	        res = "-No key-";
+	    }
+	    return res;}
 }

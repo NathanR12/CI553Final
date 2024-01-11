@@ -1,11 +1,12 @@
 package catalogue;
-
+import java.util.Comparator;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Formatter;
 import java.util.Locale;
-
+import java.util.Collections;
+import java.util.Observer;
 /**
  * A collection of products from the CatShop.
  *  used to record the products that are to be/
@@ -56,11 +57,33 @@ public class Basket extends ArrayList<Product> implements Serializable
    */
   // Will be in the Java doc for Basket
   @Override
-  public boolean add( Product pr )
-  {                              
-    return super.add( pr );     // Call add in ArrayList
+  public boolean add( Product pr ) {
+	  if (pr != null && pr.isValid()) {
+		  int existingIndex = indexOfProduct(pr.getProductNum());
+  if (existingIndex != -1) {
+      // If the product exists, update the quantity
+      Product existingProduct = get(existingIndex);
+      existingProduct.setQuantity(existingProduct.getQuantity() + pr.getQuantity());
+  } else {                              
+    super.add( pr );     // Call add in ArrayList
   }
+  // Sort the basket in ascending order based on product numbers
+  Collections.sort(this, Comparator.comparing(Product::getProductNum));
 
+  return true;
+	  }
+	  return false;
+	  
+}
+  private int indexOfProduct(String productNum) {
+      for (int i = 0; i < size(); i++) {
+          Product pr = get(i);
+          if (pr.getProductNum().equalsIgnoreCase(productNum)) {
+              return i;
+          }
+      }
+      return -1;
+  }
   /**
    * Returns a description of the products in the basket suitable for printing.
    * @return a string description of the basket products
@@ -93,5 +116,11 @@ public class Basket extends ArrayList<Product> implements Serializable
       fr.close();
     }
     return sb.toString();
+  }
+  public void doRemove() {
+      if (!isEmpty()) {
+          remove(size() - 1);  // Remove the last item
+          Collections.sort(this, Comparator.comparing(Product::getProductNum)); // Sort the basket in ascending order based on product numbers
+      }
   }
 }

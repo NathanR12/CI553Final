@@ -35,5 +35,14 @@ public interface StockReadWriter extends StockReader
    * @throws middle.StockException if issue
    */
   void modifyStock(Product detail) throws StockException;
+  
+  /**
+   * Removes stock from the store.
+   * Assumes the product exists in the database.
+   * @param pNum Product number
+   * @param amount Amount of stock to remove
+   * @throws StockException if there's an issue with the stock operation
+   */
+  void removeStock(String pNum, int amount) throws StockException;
 
 }

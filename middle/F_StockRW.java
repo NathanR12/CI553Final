@@ -113,5 +113,23 @@ public class F_StockRW extends F_StockR
       throw new StockException( "Net: " + e.getMessage() );
     }
   }
+  /**
+   * Removes stock from the store.
+   * Assumes the product exists in the database.
+   * @param pNum Product number
+   * @param amount Amount of stock to remove
+   * @throws StockException if there's an issue with the stock operation
+   */
+  @Override
+  public void removeStock(String pNum, int amount) throws StockException {
+      DEBUG.trace("F_StockRW:removeStock()");
+      try {
+          if (aR_StockRW == null) connect();
+          aR_StockRW.removeStock(pNum, amount);
+      } catch (RemoteException e) {
+          aR_StockRW = null;
+          throw new StockException("Net: " + e.getMessage());
+      }
+  }
 
 }

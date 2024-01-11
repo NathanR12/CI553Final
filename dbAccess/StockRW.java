@@ -130,4 +130,24 @@ public class StockRW extends StockR implements StockReadWriter
       throw new StockException( "SQL modifyStock: " + e.getMessage() );
     }
   }
+  /**
+   * Removes stock from the store.
+   * Assumes the product exists in the database.
+   * @param pNum Product number
+   * @param amount Amount of stock to remove
+   */
+  public synchronized void removeStock(String pNum, int amount)
+         throws StockException {
+    try {
+      getStatementObject().executeUpdate(
+        "update StockTable set stockLevel = stockLevel - " + amount +
+        "       where productNo = '" + pNum + "' and " +
+        "             stockLevel >= " + amount + ""
+      );
+      //getConnectionObject().commit();
+      DEBUG.trace("DB StockRW: removeStock(%s,%d)", pNum, amount);
+    } catch (SQLException e) {
+      throw new StockException("SQL removeStock: " + e.getMessage());
+    }
+  }
 }

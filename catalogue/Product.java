@@ -58,5 +58,7 @@ public class Product implements Serializable
   { 
     theQuantity = aQuantity;
   }
-
+  public boolean isValid() {
+      return thePrice >= 0 && theQuantity >= 0;
+  }
 }

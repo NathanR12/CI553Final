@@ -1,7 +1,6 @@
 package clients.backDoor;
 
 import catalogue.Basket;
-import catalogue.BetterBasket;
 import catalogue.Product;
 import debug.DEBUG;
 import middle.MiddleFactory;
@@ -135,6 +134,59 @@ public class BackDoorModel extends Observable
   /**
    * Clear the product()
    */
+  
+  /**
+   * Remove stock 
+   * @param productNum The product number of the item
+   * @param quantity   How many to be removed
+   */
+  public void doRemove(String productNum, String quantity)
+  {
+      String theAction = "";
+      theBasket = makeBasket();
+      pn = productNum.trim();  // Product no.
+      int amount = 0;
+      try
+      {
+          String aQuantity = quantity.trim();
+          try
+          {
+              amount = Integer.parseInt(aQuantity);   // Convert
+              if (amount < 0)
+                  throw new NumberFormatException("-ve");
+          }
+          catch (Exception err)
+          {
+              theAction = "Invalid quantity";
+              setChanged();
+              notifyObservers(theAction);
+              return;
+          }
+
+          if (theStock.exists(pn))  // Stock Exists?
+          {
+              try {
+                  theStock.removeStock(pn, amount);  // Remove stock
+                  Product pr = theStock.getDetails(pn);  // Get details
+                  theBasket.add(pr);  //
+                  theAction = "";  // Display
+              } catch (StockException e) {
+                  theAction = e.getMessage();
+              }
+          } else {  // F
+              theAction =  // Inform Unknown
+                      "Unknown product number " + pn;  // product number
+          }
+      } catch (StockException e)
+      {
+          theAction = e.getMessage();
+      }
+      setChanged();
+      notifyObservers(theAction);
+  }
+
+ 
+  
   public void doClear()
   {
     String theAction = "";

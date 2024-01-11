@@ -39,6 +39,16 @@ public class BackDoorController
   {
     model.doRStock(pn, quantity);
   }
+  /** 
+   * Remove stock from view	
+   * @param pn The number to be removed	
+   * @param quantity The quantity to be removed
+   */
+  public void doRemove(String pn, String quantity)
+  {
+	  model.doRemove(pn, quantity);
+  }
+  
 
   /**
    * Clear interaction from view
@@ -47,6 +57,7 @@ public class BackDoorController
   {
     model.doClear();
   }
+  
 
   
 }

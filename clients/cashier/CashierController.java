@@ -1,5 +1,5 @@
 package clients.cashier;
-
+import javax.swing.JOptionPane;
 
 /**
  * The Cashier Controller
@@ -42,8 +42,10 @@ public class CashierController
    /**
    * Bought interaction from view
    */
-  public void doBought()
+  public void doBought(String contactNumber)
   {
-    model.doBought();
+    model.doBought(contactNumber);
   }
+  public void doRemove() {
+      model.doRemove(); }
 }

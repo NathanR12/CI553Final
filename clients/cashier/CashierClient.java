@@ -1,4 +1,6 @@
 package clients.cashier;
+import javax.swing.JFrame;
+import javax.swing.RootPaneContainer;
 
 import catalogue.*;
 import middle.MiddleFactory;
@@ -6,7 +8,13 @@ import middle.Names;
 import middle.RemoteMiddleFactory;
 
 import javax.swing.*;
-
+import javax.swing.JFrame;
+import javax.swing.JFrame;
+import javax.swing.RootPaneContainer;
+import javax.swing.JFrame;
+import javax.swing.RootPaneContainer;
+import javax.swing.RootPaneContainer;
+import java.util.Observer;
 /**
  * The standalone Cashier Client.
  * @author  Mike Smith University of Brighton

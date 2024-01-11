@@ -1,5 +1,6 @@
 package clients.cashier;
 
+import javax.swing.JOptionPane;
 import catalogue.Basket;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
@@ -9,8 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
-
-
+import java.util.Observer;
+import java.util.Observer;
 /**
  * View of the model
  * @author  M A Smith (c) June 2014  
@@ -23,6 +24,8 @@ public class CashierView implements Observer
   private static final String CHECK  = "Check";
   private static final String BUY    = "Buy";
   private static final String BOUGHT = "Bought";
+  private static final String REMOVE = "Remove";
+ 
 
   private final JLabel      theAction  = new JLabel();
   private final JTextField  theInput   = new JTextField();
@@ -31,7 +34,8 @@ public class CashierView implements Observer
   private final JButton     theBtCheck = new JButton( CHECK );
   private final JButton     theBtBuy   = new JButton( BUY );
   private final JButton     theBtBought= new JButton( BOUGHT );
-
+  private final JButton    theBtRemove = new JButton( REMOVE ); // New Remove Button
+  
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
   private CashierController cont       = null;
@@ -74,7 +78,19 @@ public class CashierView implements Observer
 
     theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Clear Button
     theBtBought.addActionListener(                  // Call back code
-      e -> cont.doBought() );
+      e -> {;
+      // Display a pop-up input dialog to get the contact number
+      String contactNumber = JOptionPane.showInputDialog(rootWindow, "Enter Contact Number:");
+
+      // Check if the contact number is not null or empty before proceeding
+      if (contactNumber != null && !contactNumber.isEmpty()) {
+          cont.doBought(contactNumber); // Pass the contact number to the doBought method
+      } else {
+          // Inform the user that a valid contact number is required
+          JOptionPane.showMessageDialog(rootWindow, "Please enter a valid contact number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+      }
+  });
+      
     cp.add( theBtBought );                          //  Add to canvas
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
@@ -92,6 +108,14 @@ public class CashierView implements Observer
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible
     theInput.requestFocus();                        // Focus is here
+    
+   
+    theBtRemove.setBounds(16, 25 + 60 * 2, 80, 40);   // Remove Button
+    theBtRemove.addActionListener(
+    		e -> cont.doRemove());
+    cp.add(theBtRemove);
+                        
+
   }
 
   /**
